@@ -187,7 +187,7 @@ const AboutSection = () => {
           <h2 className="text-3xl font-bold text-blue-900 mb-4">
             Ready to Automate Your Business?
           </h2>
-          <p className="text-gray-600 text-lg mb-8">
+          <p className="text-gray-200 text-lg mb-8">
             Let's discuss how we can transform your operations.
           </p>
         </div>

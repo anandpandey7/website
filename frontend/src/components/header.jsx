@@ -18,11 +18,13 @@ const Header = () => {
 
   // Navigation items
   const navItems = [
-    { name: 'Services/Product', action: 'scroll', id: 'services-section' },
-    { name: 'OEM/Prototyping', action: 'navigate', path: '/oem' },
-    { name: 'About', action: 'scroll', id: 'about-section' },
-    { name: 'Contact', action: 'navigate', path: '/contact' },
-  ];
+  { name: 'Home', action: 'navigate', path: '/' },
+  { name: 'Services/Product', action: 'scroll', id: 'services-section' },
+  { name: 'OEM/Prototyping', action: 'navigate', path: '/oem' },
+  { name: 'About', action: 'scroll', id: 'about-section' },
+  { name: 'Contact', action: 'navigate', path: '/contact' },
+];
+
 
   // Main handler for navigation
   const handleNavItemClick = (item) => {

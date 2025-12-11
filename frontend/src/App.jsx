@@ -7,6 +7,7 @@ import ServiceCard from './components/servicescard.jsx';
 import TrustedBy from './components/trustedby.jsx';
 import Footer from './components/footer.jsx';
 import AboutSection from './components/about.jsx';
+import ContactPage from './components/contact.jsx';
 
 const App = () => {
   return (
@@ -40,6 +41,8 @@ const App = () => {
 
         {/* ABOUT PAGE */}
         <Route path="/about" element={<AboutSection />} />
+
+        <Route path="/contact" element={<ContactPage />} />
 
       </Routes>
 

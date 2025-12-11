@@ -34,9 +34,10 @@ const ServiceCard = ({ image, title, description, buttonText = "Explore Solution
       </p>
 
       {/* Button */}
-      <button className="bg-red-500 hover:bg-red-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors">
+      <button className="border border-blue-400 text-blue-600 hover:bg-blue-600 hover:text-white font-semibold px-8 py-3 rounded-lg transition-all">
         {buttonText}
       </button>
+
     </div>
   );
 };
