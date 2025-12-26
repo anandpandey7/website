@@ -1,133 +1,189 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination, Mousewheel, Keyboard } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import { API_BASE_URL } from "../config/apiConfig";
 
 const TrustedBy = () => {
-  const companies = [
-    { name: "Microsoft", logo: "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" },
-    { name: "Amazon", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" },
-    { name: "Google", logo: "https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" },
-    { name: "IBM", logo: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" },
-    { name: "Oracle", logo: "https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" },
-    { name: "SAP", logo: "https://upload.wikimedia.org/wikipedia/commons/5/59/SAP_2011_logo.svg" },
-    { name: "Salesforce", logo: "https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg" },
-    { name: "Adobe", logo: "https://upload.wikimedia.org/wikipedia/commons/8/8d/Adobe_Corporate_Logo.svg" }
-  ];
+  const [clients, setClients] = useState([]);
+  const navigate = useNavigate();
 
-  const duplicated = [...companies, ...companies];
+  useEffect(() => {
+    const fetchClients = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/api/clients`);
+        const data = await res.json();
+        if (data.success) {
+          setClients(data.projects || []);
+        }
+      } catch (err) {
+        console.error("Failed to fetch clients", err);
+      }
+    };
+
+    fetchClients();
+  }, []);
 
   return (
-    <section className="bg-[#e6f9ed] from-gray-50 to-white py-16 px-6 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+    <section className="bg-gradient-to-br from-[var(--secondary)] via-[var(--secondary)]/30 to-[var(--accent)]/10 py-20 px-6 overflow-hidden relative">
+      {/* Dynamic Background Elements for Visual Appeal */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-10 left-10 w-20 h-20 bg-[var(--accent)]/10 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute bottom-10 right-10 w-32 h-32 bg-[var(--primary)]/5 rounded-full blur-2xl animate-bounce"></div>
+      </div>
 
-        {/* Header */}
-        <div className="text-center mb-16">
-          <p className="text-sm uppercase tracking-wider font-semibold mb-3" style={{ color: '#3DB049' }}>
-            Trusted By
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Enhanced Header */}
+        <div className="text-center mb-20">
+          <p className="text-sm uppercase tracking-widest font-bold mb-4 text-[var(--accent)] drop-shadow-sm animate-fade-in">
+            Trusted By Industry Leaders
           </p>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold" style={{ color: '#004080' }}>
-            Leading Companies Worldwide
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[var(--primary)] leading-tight drop-shadow-lg animate-slide-up">
+            Our Esteemed Clients
           </h2>
+          <div className="w-32 h-1.5 bg-gradient-to-r from-[var(--accent)] via-[var(--primary)] to-[var(--accent)] mx-auto mt-6 rounded-full shadow-lg"></div>
+          <p className="text-lg md:text-xl text-[var(--primary)]/70 mt-6 max-w-2xl mx-auto leading-relaxed">
+            Partnering with innovators to drive excellence and deliver unparalleled results.
+          </p>
         </div>
 
-        {/* Slider Container */}
-        <div className="relative mb-16">
 
-          <style>{`
-            @keyframes slide {
-              0% { transform: translateX(0); }
-              100% { transform: translateX(-50%); }
-            }
-            .slide-track { 
-              animation: slide 30s linear infinite; 
-              will-change: transform;
-            }
-            .slide-track:hover { animation-play-state: paused; }
-          `}</style>
-
-          {/* Track */}
-          <div className="flex slide-track gap-6">
-
-            {duplicated.map((c, index) => (
-              <div 
-                key={index}
-                className="flex-shrink-0 w-56 md:w-64"
-              >
-                <div className="
-                  group 
-                  bg-white 
-                  h-28
-                  px-6 
-                  rounded-2xl 
-                  shadow-md 
-                  hover:shadow-xl
-                  border-2 
-                  border-transparent
-                  hover:border-opacity-100
-                  transition-all 
-                  duration-300
-                  flex 
-                  flex-col 
-                  items-center 
-                  justify-center 
-                  gap-3
-                " style={{ borderColor: 'transparent' }}
-                onMouseEnter={(e) => e.currentTarget.style.borderColor = '#3DB049'}
-                onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}
+        {/* Swiper Carousel - Added padding to prevent overflow */}
+        <div className="relative px-4">
+          <Swiper
+            modules={[Autoplay, Pagination, Mousewheel, Keyboard]}
+            spaceBetween={28}
+            slidesPerView={1}
+            breakpoints={{
+              640: { slidesPerView: 2 },
+              768: { slidesPerView: 3 },
+              1024: { slidesPerView: 4 },
+              1280: { slidesPerView: 5 },
+            }}
+            loop={true}
+            autoplay={{
+              delay: 1500,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
+            }}
+            grabCursor={true}
+            mousewheel={true}
+            keyboard={{ enabled: true }}
+            pagination={{
+              el: ".swiper-pagination",
+              clickable: true,
+              dynamicBullets: true,
+            }}
+            className="pb-12"
+          >
+            {clients.map((c, index) => (
+              <SwiperSlide key={c._id || index} className="py-4">
+                <div
+                  onClick={() => navigate(`/clients/${c._id}`)}
+                  className="
+                    cursor-pointer group relative
+                    bg-[var(--secondary)]
+                    h-44 px-6 py-3 rounded-xl mb-1.5
+                    border-2 border-[var(--primary)] border-opacity-10
+                    transition-all duration-300 ease-out
+                    flex flex-col items-center justify-center gap-4
+                    hover:scale-[1.03]
+                    hover:border-[var(--accent)] hover:border-opacity-100
+                    focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-2
+                    shadow-sm hover:shadow-lg
+                  "
+                  style={{
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.12)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`View details for ${c.clientName}`}
+                  onKeyDown={(e) => { if (e.key === 'Enter') navigate(`/clients/${c._id}`); }}
                 >
-                  <img 
-                    src={c.logo} 
-                    alt={`${c.name} logo`}
-                    className="
-                      h-10 md:h-12
-                      w-auto 
-                      max-w-full
-                      object-contain 
-                      grayscale 
-                      opacity-60
-                      group-hover:grayscale-0 
-                      group-hover:opacity-100
-                      transition-all 
-                      duration-300
-                    "
-                  />
+                  {/* Hover Background Effect */}
+                  <div 
+                    className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{
+                      background: `linear-gradient(135deg, transparent 0%, var(--accent) 0%, transparent 100%)`,
+                      opacity: 0,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.opacity = '0.03';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.opacity = '0';
+                    }}
+                  ></div>
+                  
+                  {/* Logo Container */}
+                  <div className="relative z-10 h-20 w-full flex items-center justify-center">
+                    <img
+                      src={`${API_BASE_URL}${c.logo}`}
+                      alt={c.clientName}
+                      className="
+                        max-h-20 max-w-full w-auto object-contain
+                        opacity-90 group-hover:opacity-100
+                        group-hover:scale-110
+                        transition-all duration-300
+                      "
+                    />
+                  </div>
+                  
+                  {/* Client Name - Improved visibility */}
                   <span 
                     className="
-                      text-sm md:text-base
-                      font-semibold 
-                      text-center
-                      truncate
-                      w-full
-                      px-2
+                      text-sm md:text-base font-semibold text-center
+                      text-[var(--primary)]
+                      group-hover:text-[var(--accent)]
+                      transition-colors duration-300
+                      relative z-10
+                      line-clamp-2 px-2 w-full
                     "
-                    style={{ color: '#005699' }}
+                    style={{
+                      opacity: 0.85,
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.opacity = '1';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.opacity = '0.85';
+                    }}
                   >
-                    {c.name}
+                    {c.clientName}
                   </span>
                 </div>
-              </div>
+              </SwiperSlide>
             ))}
+          </Swiper>
 
-          </div>
+          {/* Pagination Dots */}
+          <div className="swiper-pagination mt-4"></div>
         </div>
-
-        {/* Stats */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          <div className="p-6 rounded-xl transition-transform hover:scale-105" style={{ backgroundColor: '#f0f9ff' }}>
-            <p className="text-4xl font-bold mb-2" style={{ color: '#3DB049' }}>500+</p>
-            <p className="text-gray-600 font-medium">Enterprise Clients</p>
-          </div>
-
-          <div className="p-6 rounded-xl transition-transform hover:scale-105" style={{ backgroundColor: '#f0f9ff' }}>
-            <p className="text-4xl font-bold mb-2" style={{ color: '#004080' }}>50+</p>
-            <p className="text-gray-600 font-medium">Countries Served</p>
-          </div>
-
-          <div className="p-6 rounded-xl transition-transform hover:scale-105" style={{ backgroundColor: '#f0f9ff' }}>
-            <p className="text-4xl font-bold mb-2" style={{ color: '#005699' }}>99.9%</p>
-            <p className="text-gray-600 font-medium">Customer Satisfaction</p>
-          </div>
-        </div>
-
       </div>
+
+      {/* Custom Pagination Styling */}
+      <style jsx>{`
+        .swiper-pagination-bullet {
+          background: var(--accent);
+          opacity: 0.4;
+          width: 8px;
+          height: 8px;
+          transition: all 0.3s ease;
+        }
+        .swiper-pagination-bullet-active {
+          opacity: 1;
+          width: 24px;
+          border-radius: 4px;
+        }
+      `}</style>
     </section>
   );
 };
