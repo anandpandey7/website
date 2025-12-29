@@ -9,7 +9,7 @@ const NavigationLink = ({ children, onClick, isCompact }) => (
       relative text-[var(--secondary)]
       hover:text-[var(--accent)] hover:scale-105
       transition-all duration-300 ease-in-out
-      font-semibold rounded-lg overflow-hidden
+      font-semibold rounded-lg overflow-hidden cursor-pointer
       ${isCompact ? 'px-3 py-1.5 text-sm' : 'px-4 py-2 text-base'}
       before:absolute before:bottom-0 before:left-0 before:w-0 before:h-0.5 before:bg-[var(--accent)]
       hover:before:w-full before:transition-all before:duration-300
@@ -32,8 +32,9 @@ const Header = ({ settings }) => {
 
   const navItems = [
     { name: "Home", action: "navigate", path: "/" },
-    { name: "Services/Product", action: "scroll", id: "services-section" },
+    { name: "Services", action: "scroll", id: "services-section" },
     { name: "OEM/Prototyping", action: "navigate", path: "/oem" },
+    { name: "Careers", action: "navigate", path: "/careers" },
     { name: "About", action: "scroll", id: "about-section" },
     { name: "Contact", action: "navigate", path: "/contact" },
   ];
@@ -101,7 +102,7 @@ const Header = ({ settings }) => {
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex space-x-1">
+          <nav className="hidden md:flex space-x-1 ">
             {filteredNavItems.map((item) => (
               <NavigationLink
                 key={item.name}

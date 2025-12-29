@@ -54,7 +54,7 @@ const AboutSection = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-[#1e3a8a] from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-[var(--primary)] from-slate-50 to-blue-50">
       {/* ------------------ Hero Section ------------------ */}
       <div className="relative bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-20 px-4 overflow-hidden">
         <div className="absolute inset-0 opacity-10">

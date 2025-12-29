@@ -6,11 +6,10 @@ const ClientDetail = () => {
   const { id } = useParams();
   const [client, setClient] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  // ✅ Prefix API_BASE_URL to all relative <img src="">
-  const addBaseUrlToImages = (html) => {
-    if (!html) return "";
-
+  // ✅ Prefix API_BASE_URL to relative image src from CKEditor HTML
+  const addBaseUrlToImages = (html = "") => {
     return html.replace(
       /<img\s+[^>]*src="([^"]+)"[^>]*>/gi,
       (match, src) => {
@@ -19,24 +18,28 @@ const ClientDetail = () => {
           src.startsWith("https://") ||
           src.startsWith("data:")
         ) {
-          return match; // already absolute or base64
+          return match;
         }
-
         return match.replace(src, `${API_BASE_URL}${src}`);
       }
     );
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0); 
     const fetchClient = async () => {
       try {
         const res = await fetch(`${API_BASE_URL}/api/clients/${id}`);
         const data = await res.json();
+
         if (data.success) {
           setClient(data.project);
+        } else {
+          setError("Client not found");
         }
       } catch (err) {
         console.error("Fetch client error:", err);
+        setError("Failed to load client");
       } finally {
         setLoading(false);
       }
@@ -53,41 +56,25 @@ const ClientDetail = () => {
     );
   }
 
-  if (!client) {
+  if (error || !client) {
     return (
       <div className="min-h-screen flex items-center justify-center text-[var(--accent)]">
-        Client not found
+        {error || "Client not found"}
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-[var(--secondary)] py-12 px-4">
-      <div className="max-w-4xl mx-auto bg-[var(--surface)] rounded-xl shadow-lg p-8">
-        
-        {/* 🔹 Header */}
-        <div className="flex items-center gap-4 mb-6">
-          <img
-            src={`${API_BASE_URL}${client.logo}`}
-            alt={client.clientName}
-            className="h-16 object-contain"
-          />
-          <div>
-            <h1 className="text-3xl font-bold text-[var(--primary)]">
-              {client.clientName}
-            </h1>
-            <p className="text-[var(--accent)] font-medium">
-              {client.projectName}
-            </p>
-          </div>
-        </div>
+      <div className="max-w-5xl mx-auto bg-[var(--surface)] rounded-xl shadow-lg p-8">
 
-        {/* 🔹 Full WYSIWYG HTML from CKEditor */}
+        {/* 🔹 WYSIWYG HTML from CKEditor */}
         <div
           className="prose max-w-none text-[var(--primary)]"
           dangerouslySetInnerHTML={{
             __html: addBaseUrlToImages(
-              client.projectLongDescription || "<p>No description provided.</p>"
+              client.projectLongDescription ||
+                "<p>No description provided.</p>"
             ),
           }}
         />

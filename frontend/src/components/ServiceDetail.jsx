@@ -20,6 +20,7 @@ const ServiceDetail = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchService = async () => {
       try {
         const res = await fetch(`${API_BASE_URL}/api/services/${id}`);
@@ -65,35 +66,9 @@ const ServiceDetail = () => {
       style={{ backgroundColor: "var(--secondary)" }}
     >
       <div
-        className="max-w-4xl mx-auto rounded-xl shadow-lg p-8"
+        className="max-w-5xl mx-auto rounded-xl shadow-lg p-8"
         style={{ backgroundColor: "var(--surface)" }}
       >
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-6">
-          {service.thumbnail && (
-            <img
-              src={`${API_BASE_URL}${service.thumbnail}`}
-              alt={service.title}
-              className="h-16 object-contain rounded"
-            />
-          )}
-          <div>
-            <h1
-              className="text-3xl font-bold"
-              style={{ color: "var(--primary)" }}
-            >
-              {service.title}
-            </h1>
-            {service.description && (
-              <p
-                className="mt-1 font-medium"
-                style={{ color: "var(--accent)" }}
-              >
-                {service.description}
-              </p>
-            )}
-          </div>
-        </div>
 
         {/* 🔹 CKEditor WYSIWYG HTML */}
         <div

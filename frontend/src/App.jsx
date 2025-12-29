@@ -10,6 +10,9 @@ import AboutSection from './components/about.jsx';
 import ContactPage from './components/contact.jsx';
 import ClientDetail from "./components/ClientDetail";
 import ServiceDetail from "./components/ServiceDetail";
+import Career from './components/Carrier.jsx';
+import Portfolio from './components/Portfolio.jsx';
+import Testimonials from './components/Testimonials.jsx';
 
 import { API_BASE_URL } from './config/apiConfig';
 
@@ -96,6 +99,8 @@ const App = () => {
                   <ServiceCard />
                 </div>
 
+                <Portfolio />
+                <Testimonials />
                 <div id="about-section">
                   <AboutSection />
                 </div>
@@ -115,6 +120,8 @@ const App = () => {
           <Route path="/clients/:id" element={<ClientDetail />} />
 
           <Route path="/services/:id" element={<ServiceDetail />} />
+
+          <Route path="/careers" element={<Career />} />
         </Routes>
 
         {/* Footer */}

@@ -7,19 +7,6 @@ import logoAnimation from "../assets/logo_animation.mp4";
  * 
  * An upgraded, visually striking hero section with enhanced animations, gradients, and interactive elements.
  * Leverages CSS custom properties (--primary, --secondary, --accent, --surface) for theming.
- * 
- * Upgrades:
- * - Added subtle background gradient and glassmorphism effects for depth.
- * - Enhanced video containers with overlays and improved hover animations.
- * - Upgraded CTA button with ripple effect and better accessibility.
- * - Redesigned scroll indicator with a custom animated mouse icon and "Scroll Down" text for better guidance.
- * - Added floating particles or subtle animations for dynamism.
- * - Improved responsive design and performance optimizations.
- * 
- * Accessibility Notes:
- * - Videos remain muted for autoplay.
- * - Enhanced focus states and ARIA labels.
- * - High contrast maintained via color variables.
  */
 const HeroSection = () => {
   return (
@@ -35,7 +22,10 @@ const HeroSection = () => {
         <div className="absolute bottom-30 left-2/3 w-3 h-3 bg-[var(--accent)]/20 rounded-full animate-ping"></div>
 
         {/* More new effects */}
-        <div className="absolute top-1 left-1/3 w-3 h-3 bg-[var(--primary)]/50 square animate-spin"></div>
+        <div 
+          className=" blur-3xl  sm:blur-xl absolute top-90 left-10 w-20 h-20 rounded-full animate-pulse"
+          style={{ backgroundColor: 'var(--accent)', opacity: 0.1 }}
+        ></div>
         <div className="absolute top-25 right-5 w-4 h-4 bg-[var(--accent)]/40 rounded-full animate-pulse"></div>
         <div className="absolute top-50 left-3/7 w-2 h-2 bg-[var(--primary)]/60 rounded-full animate-bounce"></div>
         <div className="absolute top-75 right-1/4 w-2 h-2 bg-[var(--accent)]/70 rounded-full animate-ping"></div>
