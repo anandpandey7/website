@@ -89,6 +89,7 @@ import { useNavigate } from "react-router-dom";
 const ServicesManager = () => {
   const [services, setServices] = useState([]);
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     const fetchServices = async () => {

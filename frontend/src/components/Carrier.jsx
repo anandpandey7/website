@@ -1,7 +1,13 @@
 import React from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import { Users, Heart, TrendingUp, Award, Globe, Target, Lightbulb, Shield, Leaf } from 'lucide-react';
 
 export default function Career() {
+  const navigate = useNavigate(); // Initialize the navigate function
+
+  const handleClick = () => {
+    navigate('/jobs'); // Navigate to the "/jobs" route
+  };
   const cultureValues = [
     {
       icon: <Users className="w-8 h-8" />,
@@ -54,7 +60,9 @@ export default function Career() {
             <p className="text-xl md:text-2xl mb-8 text-blue-100 max-w-3xl mx-auto">
               Where careers grow, ideas flourish, and success is shared
             </p>
-            <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transform hover:scale-105 transition-transform hover:shadow-lg ">
+            <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transform hover:scale-105 transition-transform hover:shadow-lg "
+            onClick={handleClick}
+            >
               Explore Career Opportunities
             </button>
           </div>
@@ -149,7 +157,8 @@ export default function Career() {
             Join us and experience why Dharti Automation is not just a workplace, but a place where careers grow, ideas flourish, and success is shared.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+            <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
+            onClick={handleClick}>
               View Open Positions
             </button>
           </div>

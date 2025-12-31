@@ -31,7 +31,7 @@ const HeroSection = () => {
         <div className="absolute top-75 right-1/4 w-2 h-2 bg-[var(--accent)]/70 rounded-full animate-ping"></div>
         
         {/* Diagonal and off-center effects */}
-        <div className="absolute top-60 left-1/4 w-3 h-3 bg-[var(--primary)]/40 rounded-full animate-pulse"></div>
+        <div className="absolute top-55 left-1/4 w-3 h-3 bg-[var(--primary)]/40 rounded-full animate-pulse"></div>
         <div className="absolute top-80 right-10 w-3 h-3 bg-[var(--accent)]/50 rounded-full animate-bounce"></div>
         <div className="absolute bottom-40 left-3/4 w-2 h-2 bg-[var(--accent)]/30 rounded-full animate-ping"></div>
         <div className="absolute bottom-10 left-1/3 w-2 h-2 bg-[var(--primary)]/30 rounded-full animate-pulse"></div>

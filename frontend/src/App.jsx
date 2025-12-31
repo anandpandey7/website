@@ -13,6 +13,8 @@ import ServiceDetail from "./components/ServiceDetail";
 import Career from './components/Carrier.jsx';
 import Portfolio from './components/Portfolio.jsx';
 import Testimonials from './components/Testimonials.jsx';
+import JobPage from './components/JobPage.jsx';
+import Blog from './components/Blog.jsx';
 
 import { API_BASE_URL } from './config/apiConfig';
 
@@ -101,6 +103,7 @@ const App = () => {
 
                 <Portfolio />
                 <Testimonials />
+                <Blog />
                 <div id="about-section">
                   <AboutSection />
                 </div>
@@ -122,6 +125,7 @@ const App = () => {
           <Route path="/services/:id" element={<ServiceDetail />} />
 
           <Route path="/careers" element={<Career />} />
+          <Route path="/jobs" element={<JobPage />} />
         </Routes>
 
         {/* Footer */}

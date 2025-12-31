@@ -4,11 +4,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Mousewheel, Keyboard } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
+import { motion, useInView } from "framer-motion"; // Added useInView for scroll-triggered animations
 import { API_BASE_URL } from "../config/apiConfig";
 
 const TrustedBy = () => {
   const [clients, setClients] = useState([]);
+  const [loading, setLoading] = useState(true); // Added loading state
   const navigate = useNavigate();
+  const ref = React.useRef(null); // Ref for useInView
+  const isInView = useInView(ref, { once: true, margin: "-100px" }); // Triggers animation when 100px into view, once only
 
   useEffect(() => {
     const fetchClients = async () => {
@@ -20,157 +24,283 @@ const TrustedBy = () => {
         }
       } catch (err) {
         console.error("Failed to fetch clients", err);
+      } finally {
+        setLoading(false);
       }
     };
-
     fetchClients();
   }, []);
 
+  // Variants for enhanced animations (now defined here)
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+  };
+
+  const backgroundVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 1.5 } },
+  };
+
+  const floatingVariants = {
+    animate: {
+      y: [0, -20, 0],
+      rotate: [0, 5, 0],
+      transition: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+    },
+  };
+
+  const headerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const headerItemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
+
+  const lineVariants = {
+    hidden: { scaleX: 0 },
+    visible: { scaleX: 1, transition: { duration: 1, delay: 0.8, ease: "easeInOut" } },
+  };
+
+  const slideContainerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
+
+  const slideVariants = {
+    hidden: { opacity: 0, scale: 0.8, rotateY: 90 },
+    visible: { 
+      opacity: 1, 
+      scale: 1, 
+      rotateY: 0, 
+      transition: { 
+        duration: 0.7, 
+        ease: "easeOut",
+        type: "spring",
+        stiffness: 100,
+      } 
+    },
+  };
+
   return (
-    <section className="bg-gradient-to-br from-[var(--secondary)] via-[var(--secondary)]/30 to-[var(--accent)]/10 py-20 px-6 overflow-hidden relative">
-      {/* Dynamic Background Elements for Visual Appeal */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-10 left-10 w-20 h-20 bg-[var(--accent)]/10 rounded-full blur-xl animate-pulse"></div>
-        <div className="absolute bottom-10 right-10 w-32 h-32 bg-[var(--primary)]/5 rounded-full blur-2xl animate-bounce"></div>
-      </div>
+    <motion.section
+      ref={ref} // Attach ref for scroll detection
+      className="bg-gradient-to-br from-[var(--secondary)] via-[var(--secondary)]/30 to-[var(--accent)]/10 py-20 px-6 overflow-hidden relative"
+      variants={sectionVariants}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"} // Animate based on scroll visibility
+    >
+      {/* Enhanced Dynamic Background Elements */}
+      <motion.div
+        className="absolute inset-0 pointer-events-none"
+        variants={backgroundVariants}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+      >
+        <motion.div
+          className="absolute top-10 left-10 w-20 h-20 bg-[var(--accent)]/10 rounded-full blur-xl"
+          variants={floatingVariants}
+          animate={isInView ? "animate" : false}
+        ></motion.div>
+        <motion.div
+          className="absolute bottom-10 right-10 w-32 h-32 bg-[var(--primary)]/5 rounded-full blur-2xl"
+          variants={floatingVariants}
+          animate={isInView ? "animate" : false}
+          transition={{ delay: 1 }}
+        ></motion.div>
+        {/* Added more floating elements for depth */}
+        <motion.div
+          className="absolute top-1/2 left-1/4 w-16 h-16 bg-[var(--accent)]/5 rounded-full blur-lg"
+          variants={floatingVariants}
+          animate={isInView ? "animate" : false}
+          transition={{ delay: 2 }}
+        ></motion.div>
+      </motion.div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Enhanced Header */}
-        <div className="text-center mb-20">
-          <p className="text-sm uppercase tracking-widest font-bold mb-4 text-[var(--accent)] drop-shadow-sm animate-fade-in">
-            Trusted By Industry Leaders
-          </p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[var(--primary)] leading-tight drop-shadow-lg animate-slide-up">
-            Our Esteemed Clients
-          </h2>
-          <div className="w-32 h-1.5 bg-gradient-to-r from-[var(--accent)] via-[var(--primary)] to-[var(--accent)] mx-auto mt-6 rounded-full shadow-lg"></div>
-          <p className="text-lg md:text-xl text-[var(--primary)]/70 mt-6 max-w-2xl mx-auto leading-relaxed">
-            Partnering with innovators to drive excellence and deliver unparalleled results.
-          </p>
-        </div>
-
-
-        {/* Swiper Carousel - Added padding to prevent overflow */}
-        <div className="relative px-4">
-          <Swiper
-            modules={[Autoplay, Pagination, Mousewheel, Keyboard]}
-            spaceBetween={28}
-            slidesPerView={1}
-            breakpoints={{
-              640: { slidesPerView: 2 },
-              768: { slidesPerView: 3 },
-              1024: { slidesPerView: 4 },
-              1280: { slidesPerView: 5 },
-            }}
-            loop={true}
-            autoplay={{
-              delay: 1500,
-              disableOnInteraction: false,
-              pauseOnMouseEnter: true,
-            }}
-            grabCursor={true}
-            mousewheel={true}
-            keyboard={{ enabled: true }}
-            pagination={{
-              el: ".swiper-pagination",
-              clickable: true,
-              dynamicBullets: true,
-            }}
-            className="pb-12"
+        {/* Enhanced Header with Staggered Animations */}
+        <motion.div
+          className="text-center mb-20"
+          variants={headerVariants}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          <motion.p
+            className="text-sm uppercase tracking-widest font-bold mb-4 text-[var(--accent)] drop-shadow-sm"
+            variants={headerItemVariants}
           >
-            {clients.map((c, index) => (
-              <SwiperSlide key={c._id || index} className="py-4">
-                <div
-                  onClick={() => navigate(`/clients/${c._id}`)}
-                  className="
-                    cursor-pointer group relative
-                    bg-[var(--secondary)]
-                    h-44 px-6 py-3 rounded-xl mb-1.5
-                    border-2 border-[var(--primary)] border-opacity-10
-                    transition-all duration-300 ease-out
-                    flex flex-col items-center justify-center gap-4
-                    hover:scale-[1.03]
-                    hover:border-[var(--accent)] hover:border-opacity-100
-                    focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-2
-                    shadow-sm hover:shadow-lg
-                  "
-                  style={{
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.12)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
-                  }}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={`View details for ${c.clientName}`}
-                  onKeyDown={(e) => { if (e.key === 'Enter') navigate(`/clients/${c._id}`); }}
-                >
-                  {/* Hover Background Effect */}
-                  <div 
-                    className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    style={{
-                      background: `linear-gradient(135deg, transparent 0%, var(--accent) 0%, transparent 100%)`,
-                      opacity: 0,
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.opacity = '0.03';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.opacity = '0';
-                    }}
-                  ></div>
-                  
-                  {/* Logo Container */}
-                  <div className="relative z-10 h-20 w-full flex items-center justify-center">
-                    <img
-                      src={`${API_BASE_URL}${c.logo}`}
-                      alt={c.clientName}
-                      className="
-                        max-h-20 max-w-full w-auto object-contain
-                        opacity-90 group-hover:opacity-100
-                        group-hover:scale-110
-                        transition-all duration-300
-                      "
-                    />
-                  </div>
-                  
-                  {/* Client Name - Improved visibility */}
-                  <span 
-                    className="
-                      text-sm md:text-base font-semibold text-center
-                      text-[var(--primary)]
-                      group-hover:text-[var(--accent)]
-                      transition-colors duration-300
-                      relative z-10
-                      line-clamp-2 px-2 w-full
-                    "
-                    style={{
-                      opacity: 0.85,
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.opacity = '1';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.opacity = '0.85';
-                    }}
-                  >
-                    {c.clientName}
-                  </span>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+            Trusted By Industry Leaders
+          </motion.p>
+          <motion.h2
+            className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[var(--primary)] leading-tight drop-shadow-lg"
+            variants={headerItemVariants}
+          >
+            Our Esteemed Clients
+          </motion.h2>
+          <motion.div
+            className="w-32 h-1.5 bg-gradient-to-r from-[var(--accent)] via-[var(--primary)] to-[var(--accent)] mx-auto mt-6 rounded-full shadow-lg"
+            variants={lineVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            style={{ originX: 0.5 }}
+          ></motion.div>
+          <motion.p
+            className="text-lg md:text-xl text-[var(--primary)]/70 mt-6 max-w-2xl mx-auto leading-relaxed"
+            variants={headerItemVariants}
+          >
+            Partnering with innovators to drive excellence and deliver unparalleled results.
+          </motion.p>
+        </motion.div>
 
-          {/* Pagination Dots */}
-          <div className="swiper-pagination mt-4"></div>
-        </div>
+        {/* Loading State */}
+        {loading && (
+          <motion.div
+            className="flex justify-center items-center py-20"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="w-12 h-12 border-4 border-[var(--accent)] border-t-transparent rounded-full"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            ></motion.div>
+          </motion.div>
+        )}
+
+        {/* Swiper Carousel */}
+        {!loading && (
+          <motion.div
+            className="relative px-4"
+            variants={slideContainerVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+          >
+            <Swiper
+              modules={[Autoplay, Pagination, Mousewheel, Keyboard]}
+              spaceBetween={28}
+              slidesPerView={1}
+              breakpoints={{
+                640: { slidesPerView: 2 },
+                768: { slidesPerView: 3 },
+                1024: { slidesPerView: 4 },
+                1280: { slidesPerView: 5 },
+              }}
+              loop={true}
+              autoplay={{
+                delay: 2000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }}
+              grabCursor={true}
+              mousewheel={true}
+              keyboard={{ enabled: true }}
+              pagination={{
+                el: ".swiper-pagination",
+                clickable: true,
+                dynamicBullets: true,
+              }}
+              className="pb-12"
+            >
+              {clients.map((c, index) => (
+                <SwiperSlide key={c._id || index} className="py-4 px-3">
+                  <motion.div
+                    onClick={() => navigate(`/clients/${c._id}`)}
+                    className="
+                      cursor-pointer group relative
+                      bg-[var(--secondary)]
+                      h-44 px-6 py-3 rounded-xl mb-1.5
+                      border-2 border-[var(--primary)] border-opacity-10
+                      flex flex-col items-center justify-center gap-4
+                      focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:ring-offset-2
+                      shadow-sm
+                    "
+                    variants={slideVariants}
+                    whileHover={{
+                      scale: 1.05,
+                      rotateY: -5,
+                      boxShadow: '0 12px 32px rgba(0,0,0,0.15)',
+                      borderColor: 'var(--accent)',
+                      borderOpacity: 1,
+                      transition: { duration: 0.3, ease: "easeOut" },
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`View details for ${c.clientName}`}
+                    onKeyDown={(e) => { if (e.key === 'Enter') navigate(`/clients/${c._id}`); }}
+                  >
+                    {/* Enhanced Hover Background Effect */}
+                    <motion.div
+                      className="absolute inset-0 rounded-xl"
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      whileHover={{ opacity: 0.05, scale: 1 }}
+                      transition={{ duration: 0.4 }}
+                      style={{
+                        background: `linear-gradient(135deg, transparent 0%, var(--accent) 50%, transparent 100%)`,
+                      }}
+                    ></motion.div>
+                    
+                    {/* Logo Container with Enhanced Animation */}
+                    <motion.div
+                      className="relative z-10 flex items-center justify-center h-14 sm:h-20 w-full"
+                      whileHover={{ y: -5 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <motion.img
+                        src={`${API_BASE_URL}${c.logo}`}
+                        alt={c.clientName}
+                        className="
+                          max-h-14 sm:max-h-20
+                          max-w-[120px] sm:max-w-full
+                          w-auto object-contain mt-3
+                          opacity-90
+                        "
+                        whileHover={{ scale: 1.15, opacity: 1, rotate: 2 }}
+                        transition={{ duration: 0.4, type: "spring", stiffness: 200 }}
+                      />
+                    </motion.div>
+                    
+                    {/* Client Name with Improved Animation */}
+                    <motion.span
+                      className="
+                        text-sm mt-6 md:text-base font-semibold text-center
+                        text-[var(--primary)]
+                        relative z-10 md:mt-1
+                        line-clamp-2 px-2 w-full
+                      "
+                      initial={{ opacity: 0.85 }}
+                      whileHover={{ opacity: 1, color: 'var(--accent)', scale: 1.02 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {c.clientName}
+                    </motion.span>
+                  </motion.div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            {/* Pagination Dots */}
+            <div className="swiper-pagination mt-4"></div>
+          </motion.div>
+        )}
       </div>
 
-      {/* Custom Pagination Styling */}
-      <style jsx>{`
+      {/* Enhanced Custom Pagination Styling */}
+      <style>{`
         .swiper-pagination-bullet {
           background: var(--accent);
           opacity: 0.4;
@@ -182,9 +312,10 @@ const TrustedBy = () => {
           opacity: 1;
           width: 24px;
           border-radius: 4px;
+          transform: scale(1.2);
         }
       `}</style>
-    </section>
+    </motion.section>
   );
 };
 

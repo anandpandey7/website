@@ -104,7 +104,7 @@ const Portfolio = ({ colours = {} }) => {
             className="pb-12"
           >
             {portfolioItems.map((item, index) => (
-              <SwiperSlide key={item._id || index} className="py-4">
+              <SwiperSlide key={item._id || index} className="py-4 px-5">
                 <div
                   className="
                     group relative
@@ -194,7 +194,7 @@ const Portfolio = ({ colours = {} }) => {
                       <span className="text-[var(--accent)] font-medium">
                         Start: {new Date(item.startDate).toLocaleDateString()}
                       </span>
-                      <span className="text-[var(--accent)] font-medium">
+                      <span className="text-[var(--accent)] font-medium ml-2">
                         End: {new Date(item.endDate).toLocaleDateString()}
                       </span>
                     </div>
