@@ -1,14 +1,15 @@
 import React from "react";
-import homepageBannerVideo from "../assets/homepage_banner.mp4";
-import logoAnimation from "../assets/logo_animation.mp4";
-
+import { API_BASE_URL } from "../config/apiConfig";
 /**
  * HeroSection Component
  * 
  * An upgraded, visually striking hero section with enhanced animations, gradients, and interactive elements.
  * Leverages CSS custom properties (--primary, --secondary, --accent, --surface) for theming.
  */
-const HeroSection = () => {
+const HeroSection = ({ settings }) => {
+  // Get the video URLs dynamically from the settings prop
+  const { video1, video2 } = settings;
+
   return (
     <section 
       className="relative bg-gradient-to-br from-[var(--secondary)] via-[var(--secondary)] to-[var(--primary)]/20 py-8 md:pt-0 pb-12 overflow-hidden"
@@ -17,7 +18,6 @@ const HeroSection = () => {
       {/* Floating Particles Background (Optional: Add via CSS or library) */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-10 left-10 w-2 h-2 bg-[var(--accent)]/30 rounded-full animate-pulse"></div>
-        <div className="absolute top-20 right-20 w-1 h-1 bg-[var(--primary)]/40 rounded-full animate-bounce"></div>
         <div className="absolute bottom-20 left-1/4 w-3 h-3 bg-[var(--accent)]/20 rounded-full animate-ping"></div>
         <div className="absolute bottom-30 left-2/3 w-3 h-3 bg-[var(--accent)]/20 rounded-full animate-ping"></div>
 
@@ -39,8 +39,7 @@ const HeroSection = () => {
         {/* Extra layered effects */}
         <div className="absolute top-35 left-1/5 w-3 h-3 bg-[var(--primary)]/50 rounded-full animate-spin"></div>
         <div className="absolute bottom-50 right-1/2 w-4 h-4 bg-[var(--accent)]/60 rounded-full animate-bounce"></div>
-    </div>
-
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Main Grid: Left Content + Right Video */}
@@ -51,8 +50,7 @@ const HeroSection = () => {
             
             {/* Logo Animation Video (Plays Once) with Glassmorphism Overlay */}
             <div
-              className="
-                relative aspect-video
+              className="relative aspect-video
                 bg-[var(--surface)]/80 backdrop-blur-md
                 rounded-2xl shadow-2xl overflow-hidden
                 border border-[var(--primary)]/30
@@ -62,8 +60,9 @@ const HeroSection = () => {
               role="img"
               aria-label="Company logo animation"
             >
+              {/* Logo animation video using dynamic link */}
               <video
-                src={logoAnimation}
+                src={API_BASE_URL + video1}  // Dynamically loading the second video from API
                 autoPlay
                 muted
                 playsInline
@@ -93,8 +92,7 @@ const HeroSection = () => {
               
               <a
                 href="#get-started"
-                className="
-                  relative inline-flex items-center justify-center
+                className="relative inline-flex items-center justify-center
                   px-8 md:px-10 py-4 md:py-5
                   text-[var(--secondary)]
                   bg-gradient-to-r from-[var(--accent)] to-[var(--primary)]
@@ -117,18 +115,17 @@ const HeroSection = () => {
           
           {/* Right Side: Homepage Banner Video (Looped) with Enhanced Effects */}
           <div
-            className="
-              relative aspect-video md:aspect-[16/20]
+            className="relative aspect-video md:aspect-[16/20]
               rounded-2xl overflow-hidden
               border-2 border-[var(--accent)]/50
               hover:border-[var(--accent)]
-              transition-all duration-500 shadow-2xl hover:shadow-[0_25px_50px_rgba(0,0,0,0.4)]
-            "
+              transition-all duration-500 shadow-2xl hover:shadow-[0_25px_50px_rgba(0,0,0,0.4)]"
             role="img"
             aria-label="Homepage banner video showcasing services"
           >
+            {/* Homepage banner video using dynamic link */}
             <video
-              src={homepageBannerVideo}
+              src={API_BASE_URL + video2}  // Dynamically loading the first video from API
               autoPlay
               muted
               loop

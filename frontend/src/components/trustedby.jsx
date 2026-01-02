@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination, Mousewheel, Keyboard } from "swiper/modules";
+import { Autoplay, Pagination, Mousewheel, Keyboard, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
-import { motion, useInView } from "framer-motion"; // Added useInView for scroll-triggered animations
+import "swiper/css/navigation";
+import { motion, useInView } from "framer-motion";
 import { API_BASE_URL } from "../config/apiConfig";
 
 const TrustedBy = () => {
   const [clients, setClients] = useState([]);
-  const [loading, setLoading] = useState(true); // Added loading state
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const ref = React.useRef(null); // Ref for useInView
-  const isInView = useInView(ref, { once: true, margin: "-100px" }); // Triggers animation when 100px into view, once only
+  const ref = React.useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   useEffect(() => {
     const fetchClients = async () => {
@@ -97,11 +98,11 @@ const TrustedBy = () => {
 
   return (
     <motion.section
-      ref={ref} // Attach ref for scroll detection
+      ref={ref}
       className="bg-gradient-to-br from-[var(--secondary)] via-[var(--secondary)]/30 to-[var(--accent)]/10 py-20 px-6 overflow-hidden relative"
       variants={sectionVariants}
       initial="hidden"
-      animate={isInView ? "visible" : "hidden"} // Animate based on scroll visibility
+      animate={isInView ? "visible" : "hidden"}
     >
       {/* Enhanced Dynamic Background Elements */}
       <motion.div
@@ -121,7 +122,6 @@ const TrustedBy = () => {
           animate={isInView ? "animate" : false}
           transition={{ delay: 1 }}
         ></motion.div>
-        {/* Added more floating elements for depth */}
         <motion.div
           className="absolute top-1/2 left-1/4 w-16 h-16 bg-[var(--accent)]/5 rounded-full blur-lg"
           variants={floatingVariants}
@@ -190,7 +190,7 @@ const TrustedBy = () => {
             animate={isInView ? "visible" : "hidden"}
           >
             <Swiper
-              modules={[Autoplay, Pagination, Mousewheel, Keyboard]}
+              modules={[Autoplay, Pagination, Mousewheel, Keyboard, Navigation]}
               spaceBetween={28}
               slidesPerView={1}
               breakpoints={{
@@ -212,6 +212,10 @@ const TrustedBy = () => {
                 el: ".swiper-pagination",
                 clickable: true,
                 dynamicBullets: true,
+              }}
+              navigation={{
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
               }}
               className="pb-12"
             >
@@ -293,13 +297,17 @@ const TrustedBy = () => {
               ))}
             </Swiper>
 
-            {/* Pagination Dots */}
-            <div className="swiper-pagination mt-4"></div>
+            {/* Navigation and Pagination Container */}
+            <div className="flex justify-center items-center gap-4 mt-4">
+              <div className="swiper-button-prev"></div>
+              <div className="swiper-pagination"></div>
+              <div className="swiper-button-next"></div>
+            </div>
           </motion.div>
         )}
       </div>
 
-      {/* Enhanced Custom Pagination Styling */}
+      {/* Enhanced Custom Pagination and Navigation Styling */}
       <style>{`
         .swiper-pagination-bullet {
           background: var(--accent);
@@ -313,6 +321,32 @@ const TrustedBy = () => {
           width: 24px;
           border-radius: 4px;
           transform: scale(1.2);
+        }
+        .swiper-button-next,
+        .swiper-button-prev {
+          position: static !important;
+          color: var(--accent);
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.3s ease;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          cursor: pointer;
+        }
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+          background: var(--accent);
+          color: white;
+          transform: scale(1.1);
+        }
+        .swiper-button-next::after,
+        .swiper-button-prev::after {
+          font-size: 16px;
+          font-weight: bold;
         }
       `}</style>
     </motion.section>

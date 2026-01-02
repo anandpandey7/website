@@ -15,6 +15,8 @@ import Portfolio from './components/Portfolio.jsx';
 import Testimonials from './components/Testimonials.jsx';
 import JobPage from './components/JobPage.jsx';
 import Blog from './components/Blog.jsx';
+import CertificatesSection from './components/Certificates.jsx';
+import OEMPrototypingSection from './components/OEM-Prototyping.jsx';
 
 import { API_BASE_URL } from './config/apiConfig';
 
@@ -94,7 +96,7 @@ const App = () => {
             path="/"
             element={
               <>
-                <HeroSection />
+                <HeroSection settings={settings} />
                 <TrustedBy />
 
                 <div id="services-section">
@@ -126,6 +128,11 @@ const App = () => {
 
           <Route path="/careers" element={<Career />} />
           <Route path="/jobs" element={<JobPage />} />
+
+          <Route path="/certifications" element={<CertificatesSection />} />
+          
+          <Route path="/oem" element={<OEMPrototypingSection />} />
+          
         </Routes>
 
         {/* Footer */}

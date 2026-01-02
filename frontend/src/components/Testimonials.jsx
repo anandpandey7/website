@@ -74,7 +74,7 @@ const Testimonials = () => {
       {/* Dynamic Background Elements for Visual Appeal */}
       <div className="absolute inset-0 pointer-events-none">
         <div
-          className="absolute top-20 right-30 w-20 h-20 rounded-full blur-xl animate-pulse"
+          className="absolute top-20 right-10 sm:right-30 w-20 h-20 rounded-full blur-xl animate-pulse"
           style={{ backgroundColor: 'var(--accent)', opacity: 0.1 }}
         ></div>
         <div

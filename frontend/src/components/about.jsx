@@ -56,7 +56,20 @@ const AboutSection = () => {
   return (
     <div className="min-h-screen bg-[var(--primary)] from-slate-50 to-blue-50">
       {/* ------------------ Hero Section ------------------ */}
-      <div className="relative bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900 text-white py-20 px-4 overflow-hidden">
+      <div className="relative py-20 px-4 overflow-hidden transition-all duration-700"
+      style={{
+    /* We create a gradient using color-mix:
+       1. color-mix(in srgb, var(--primary), white 20%) -> 80% primary, 20% white (lighter)
+       2. color-mix(in srgb, var(--primary), transparent 10%) -> slight transparency for depth
+    */
+    background: `linear-gradient(to right, 
+      color-mix(in srgb, var(--primary), white 10%), 
+      var(--primary), 
+      color-mix(in srgb, var(--primary), white 10%)
+    )`,
+    color: 'var(--secondary)' 
+  }}
+      >
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-10 w-72 h-72 bg-green-400 rounded-full blur-3xl"></div>
           <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-400 rounded-full blur-3xl"></div>

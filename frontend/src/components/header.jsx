@@ -34,6 +34,7 @@ const Header = ({ settings }) => {
     { name: "Home", action: "navigate", path: "/" },
     { name: "Services", action: "scroll", id: "services-section" },
     { name: "OEM/Prototyping", action: "navigate", path: "/oem" },
+    { name: "Certifications", action: "navigate", path: "/certifications" },
     { name: "Careers", action: "navigate", path: "/careers" },
     { name: "About", action: "scroll", id: "about-section" },
     { name: "Contact", action: "navigate", path: "/contact" },
