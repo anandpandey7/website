@@ -12,7 +12,7 @@ const HeroSection = ({ settings }) => {
 
   return (
     <section 
-      className="relative bg-gradient-to-br from-[var(--secondary)] via-[var(--secondary)] to-[var(--primary)]/20 py-8 md:pt-0 pb-12 overflow-hidden"
+      className="relative bg-gradient-to-br from-[var(--secondary)] via-[var(--secondary)] to-[var(--primary)]/20 py-0 md:pt-0 pb-3 overflow-hidden"
       aria-labelledby="hero-headline"
     >
       {/* Floating Particles Background (Optional: Add via CSS or library) */}
@@ -93,7 +93,7 @@ const HeroSection = ({ settings }) => {
               <a
                 href="#get-started"
                 className="relative inline-flex items-center justify-center
-                  px-8 md:px-10 py-4 md:py-5
+                  px-8 md:px-10 py-0 md:py-1
                   text-[var(--secondary)]
                   bg-gradient-to-r from-[var(--accent)] to-[var(--primary)]
                   hover:from-[var(--primary)] hover:to-[var(--accent)]

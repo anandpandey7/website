@@ -69,7 +69,7 @@ const Testimonials = () => {
   return (
     <section
       ref={sectionRef}
-      className="bg-gradient-to-br py-20 px-6 overflow-hidden relative"
+      className="bg-gradient-to-br py-10 px-6 overflow-hidden relative"
     >
       {/* Dynamic Background Elements for Visual Appeal */}
       <div className="absolute inset-0 pointer-events-none">

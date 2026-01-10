@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { API_BASE_URL } from "../config/apiConfig";
-// Optional: Use Lucide for icons if you have it installed: npm install lucide-react
 import { Briefcase, MapPin, Clock, Star, Users, Rocket } from "lucide-react";
+// Integrated Toastify
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const JobsPage = () => {
   const [jobs, setJobs] = useState([]);
@@ -10,7 +12,7 @@ const JobsPage = () => {
   const [showModal, setShowModal] = useState(false);
   
   const [generalForm, setGeneralForm] = useState({
-    name: "", email: "", phone: "", details: "", jobName: "", cv: null, jobId: null,jobTitle: null
+    name: "", email: "", phone: "", details: "", jobName: "", cv: null, jobId: null, jobTitle: null
   });
 
   useEffect(() => {
@@ -22,6 +24,7 @@ const JobsPage = () => {
         if (data.success) setJobs(data.jobs || []);
       } catch (err) {
         console.error("Failed to fetch jobs", err);
+        toast.error("Could not load job listings.");
       } finally {
         setLoading(false);
       }
@@ -30,37 +33,63 @@ const JobsPage = () => {
   }, []);
 
   const handleJobClick = (job) => {
-  setSelectedJob(job);
-  setGeneralForm({
-    ...generalForm,
-    jobId: job._id,         // Pre-fill jobId
-    jobTitle: job.title,    // Pre-fill jobTitle
-  });
-  setShowModal(true);
-};
-
+    setSelectedJob(job);
+    setGeneralForm({
+      ...generalForm,
+      jobId: job._id,
+      jobTitle: job.title,
+    });
+    setShowModal(true);
+  };
 
   const handleSubmit = async (e, isModal = false) => {
     e.preventDefault();
+    
+    // Basic Validation check for file
+    if (!generalForm.cv) {
+      toast.warning("Please upload your CV before submitting.");
+      return;
+    }
+
     const formData = new FormData();
     Object.keys(generalForm).forEach(key => {
       if (generalForm[key]) formData.append(key, generalForm[key]);
     });
+
+    // Show a loading toast for better UX
+    const loadId = toast.loading("Submitting your application...");
 
     try {
       const res = await fetch(`${API_BASE_URL}/api/careers`, {
         method: "POST",
         body: formData
       });
+      
       if (res.ok) {
-        alert("Application submitted successfully!");
-        setGeneralForm({ name: "", email: "", phone: "", details: "", jobName: "", cv: null });
+        toast.update(loadId, { 
+          render: "Application submitted successfully!", 
+          type: "success", 
+          isLoading: false, 
+          autoClose: 3000 
+        });
+        
+        setGeneralForm({ name: "", email: "", phone: "", details: "", jobName: "", cv: null, jobId: null, jobTitle: null });
         if (isModal) setShowModal(false);
       } else {
-        alert("Failed to submit.");
+        toast.update(loadId, { 
+          render: "Failed to submit. Please try again.", 
+          type: "error", 
+          isLoading: false, 
+          autoClose: 3000 
+        });
       }
     } catch (err) {
-      alert("Error submitting application.");
+      toast.update(loadId, { 
+        render: "Error connecting to server.", 
+        type: "error", 
+        isLoading: false, 
+        autoClose: 3000 
+      });
     }
   };
 
@@ -68,6 +97,9 @@ const JobsPage = () => {
 
   return (
     <div className="bg-gray-50 font-sans">
+      {/* Container for Toasts */}
+      <ToastContainer position="top-center" autoClose={3000} />
+
       {/* 1. HERO SECTION */}
       <section className="relative bg-blue-900 py-20 px-4 text-center text-white">
         <div className="max-w-4xl mx-auto">
@@ -145,7 +177,7 @@ const JobsPage = () => {
             <FormInput label="Full Name" value={generalForm.name} onChange={(val) => setGeneralForm({...generalForm, name: val})} />
             <FormInput label="Email Address" type="email" value={generalForm.email} onChange={(val) => setGeneralForm({...generalForm, email: val})} />
             <FormInput label="Phone Number" type="tel" value={generalForm.phone} onChange={(val) => setGeneralForm({...generalForm, phone: val})} />
-            {/* <FormInput label="Interested Position" placeholder="e.g. Designer" value={generalForm.jobName} onChange={(val) => setGeneralForm({...generalForm, jobName: val})} /> */}
+            
             <div className="md:col-span-2">
                <label className="block mb-1" style={{ color: "var(--primary)" }}>Upload CV</label>
                   <input
@@ -165,58 +197,47 @@ const JobsPage = () => {
       </section>
 
       {/* MODAL */}
-      {/* MODAL */}
-{showModal && (
-  <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-    <div className="bg-white rounded-2xl p-8 max-w-lg w-full relative shadow-2xl">
-      <button onClick={() => setShowModal(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
-      <h2 className="text-2xl font-bold mb-2">Apply for {selectedJob?.title}</h2>
-      <p className="text-sm text-gray-500 mb-6">Complete the form below to submit your application.</p>
-      <form onSubmit={(e) => handleSubmit(e, true)} className="space-y-4">
-        {/* Full Name */}
-        <FormInput label="Full Name" value={generalForm.name} onChange={(val) => setGeneralForm({...generalForm, name: val})} />
-        
-        {/* Email */}
-        <FormInput label="Email" type="email" value={generalForm.email} onChange={(val) => setGeneralForm({...generalForm, email: val})} />
-        
-        {/* Phone */}
-        <div className="grid grid-cols-2 gap-4">
-          <FormInput label="Phone" type="tel" value={generalForm.phone} onChange={(val) => setGeneralForm({...generalForm, phone: val})} />
-          <div>
-            <label className="block mb-1" style={{ color: "var(--primary)" }}>CV</label>
-            <input 
-              type="file" 
-              accept=".pdf,.doc,.docx" 
-              required 
-              className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" 
-              onChange={(e) => setGeneralForm({...generalForm, cv: e.target.files[0]})} 
-            />
+      {showModal && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-8 max-w-lg w-full relative shadow-2xl">
+            <button onClick={() => setShowModal(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            <h2 className="text-2xl font-bold mb-2">Apply for {selectedJob?.title}</h2>
+            <p className="text-sm text-gray-500 mb-6">Complete the form below to submit your application.</p>
+            <form onSubmit={(e) => handleSubmit(e, true)} className="space-y-4">
+              <FormInput label="Full Name" value={generalForm.name} onChange={(val) => setGeneralForm({...generalForm, name: val})} />
+              <FormInput label="Email" type="email" value={generalForm.email} onChange={(val) => setGeneralForm({...generalForm, email: val})} />
+              
+              <div className="grid grid-cols-2 gap-4">
+                <FormInput label="Phone" type="tel" value={generalForm.phone} onChange={(val) => setGeneralForm({...generalForm, phone: val})} />
+                <div>
+                  <label className="block mb-1" style={{ color: "var(--primary)" }}>CV</label>
+                  <input 
+                    type="file" 
+                    accept=".pdf,.doc,.docx" 
+                    required 
+                    className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" 
+                    onChange={(e) => setGeneralForm({...generalForm, cv: e.target.files[0]})} 
+                  />
+                </div>
+              </div>
+
+              <textarea 
+                placeholder="Tell us why you're a good fit..." 
+                className="w-full p-3 border rounded-lg text-sm" 
+                rows="3" 
+                onChange={(e) => setGeneralForm({...generalForm, details: e.target.value})} 
+              />
+
+              <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold">Send Application</button>
+            </form>
           </div>
         </div>
-
-        {/* Additional Details */}
-        <textarea 
-          placeholder="Tell us why you're a good fit..." 
-          className="w-full p-3 border rounded-lg text-sm" 
-          rows="3" 
-          onChange={(e) => setGeneralForm({...generalForm, details: e.target.value})} 
-        />
-
-        {/* Hidden jobId and jobTitle */}
-        <input type="hidden" value={generalForm.jobId} name="jobId" />
-        <input type="hidden" value={generalForm.jobTitle} name="jobTitle" />
-
-        <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-bold">Send Application</button>
-      </form>
-    </div>
-  </div>
-)}
-
+      )}
     </div>
   );
 };
 
-/* --- Helper Components for Cleanliness --- */
+/* --- Helper Components --- */
 
 const ValueCard = ({ icon, title, desc }) => (
   <div className="p-8 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">

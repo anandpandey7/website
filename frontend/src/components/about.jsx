@@ -8,6 +8,7 @@ const AboutSection = () => {
   const fullText = "A Click Is Enough";
 
   useEffect(() => {
+    window.scrollTo(0,0);
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {

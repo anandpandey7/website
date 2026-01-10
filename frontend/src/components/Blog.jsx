@@ -44,7 +44,7 @@ const Blog = () => {
   return (
     <section 
       ref={sectionRef}
-      className="py-24 px-6 overflow-hidden relative"
+      className="py-10 px-6 overflow-hidden relative"
       style={{ backgroundColor: 'var(--secondary)' }}
     >
       {/* Background Glows */}
@@ -107,7 +107,7 @@ const Blog = () => {
                   }}
                 >
                   {/* Image Container - Full Image with Padding/White Space */}
-                  <div className="relative w-full h-64 mb-8 rounded-[2rem] overflow-hidden shadow-lg bg-white/5 flex items-center justify-center p-4">
+                  <div className="relative w-full h-64 mb-8 overflow-hidden flex items-center justify-center">
                     <img
                       src={`${API_BASE_URL}${post.image}`}
                       alt={post.title}
@@ -116,6 +116,13 @@ const Blog = () => {
                     {/* Black Blur Effect on Hover */}
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
                   </div>
+                  {/* <div className="relative h-72 p-6 overflow-hidden">
+                    <img
+                      src={`${API_BASE_URL}${post.image}`}
+                      alt={post.title}
+                      className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
+                    />
+                  </div> */}
 
                   {/* Content */}
                   <div className="flex flex-col flex-grow px-2">

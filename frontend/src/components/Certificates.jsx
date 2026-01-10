@@ -9,6 +9,7 @@ const CertificationSection = () => {
   const [selectedCertificate, setSelectedCertificate] = useState(null);
 
   useEffect(() => {
+    scrollTo(0, 0);
     fetchCertifications();
   }, []);
 
@@ -98,7 +99,7 @@ const CertificationSection = () => {
               </h3>
               <div className="w-24 h-1 bg-gradient-to-r from-blue-400 to-purple-400 mx-auto rounded-full"></div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+            <div className=" gap-6 flex items-center justify-center flex-wrap">
               {certificationData.logos.map((logo, index) => (
                 <div
                   key={index}
@@ -127,7 +128,7 @@ const CertificationSection = () => {
               </div>
               <div className="w-24 h-1 bg-gradient-to-r from-green-400 to-blue-400 mx-auto rounded-full"></div>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="flex items-center justify-center gap-8 flex-wrap">
               {certificationData.certificates.map((certificate, index) => (
                 <div
                   key={index}
@@ -163,7 +164,7 @@ const CertificationSection = () => {
       {/* Certificate Modal */}
       {selectedCertificate && (
         <div
-          className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4 pt-15"
           onClick={() => setSelectedCertificate(null)}
         >
           <div className="relative max-w-5xl w-full">

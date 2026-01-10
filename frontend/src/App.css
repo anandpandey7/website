@@ -1,11 +1,259 @@
-@import "tailwindcss";
+/* --- Marquee Container --- */
+/* --- Container must be relative and have a set height --- */
+.marquee-section.style-three {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    /* This height ensures there is enough room for the tilted 'X' */
+    height: 500px; 
+    display: flex;
+    align-items: center; /* Vertically centers the intersection */
+    justify-content: center;
+}
+
+/* --- Base Stripe Style (Blue) --- */
+.marquee {
+    position: absolute; /* Changed from relative to absolute */
+    display: flex;
+    overflow: hidden;
+    width: 140%;        /* Extra width so edges don't show when tilted */
+    left: -10%;         /* Offset to center the 140% width */
+    padding: 45px 0;
+    background-color: #141f9f; 
+    transform: rotate(-7deg); /* Adjust degrees for a sharper or flatter X */
+    z-index: 1;
+    display: flex;
+    align-items: center;
+}
+
+/* --- Dark Stripe Style --- */
+.marquee.dark-bg {
+    background-color: #222222; 
+    transform: rotate(7deg); /* Opposite rotation of the blue bar */
+    z-index: 2; /* Sits on top of the blue bar */
+}
+
+/* --- Alignment Logic --- */
+.marquee-group {
+    display: flex;
+    align-items: center; /* Vertically centers text and icon */
+    flex-shrink: 0;
+    min-width: 100%;
+    animation: scroll-marquee 40s linear infinite;
+}
+
+
+
+.marquee-item {
+    display: flex;
+    align-items: center;
+    gap: 50px; /* Space between text and icon */
+    padding-right: 50px; /* Space before the next item starts */
+}
+
+@keyframes scroll-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
+
+/* --- Text & Icon Style --- */
+.marquee .text {
+    font-family: "Mona Sans", sans-serif;
+    font-size: 55px;
+    font-weight: 800;
+    color: #ffffff !important;
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin: 0;
+    line-height: 1;
+}
+
+.marquee-separator {
+    width: 45px;   /* Adjust size of marque-start.png */
+    height: 45px;
+    object-fit: contain;
+    display: block;
+}
+
+/* Make the blue stripe move in the opposite direction */
+.marquee:not(.dark-bg) .marquee-group {
+    animation-direction: reverse;
+}
+
+
+
+/* ============================================================
+   MOBILE VIEW (Phones - 767px and below)
+   ============================================================ */
+@media (max-width: 767.98px) {
+    /* 1. Reduce the container height significantly */
+    .marquee-section.style-three {
+        height: 200px !important; /* Forces the container to be shorter */
+        padding: 0 !important;    /* Removes extra spacing */
+    }
+
+    /* 2. Flatten the rotation */
+    /* High degrees (like 12deg) create huge white triangles on the sides */
+    .marquee {
+        padding: 15px 0;      /* Make the stripes thinner */
+        width: 180%;          /* Keep it wide to cover edges */
+        left: -40%;
+        transform: rotate(-9deg) !important; /* Flattened angle = less white space */
+    }
+
+    .marquee.dark-bg {
+        transform: rotate(9deg) !important;  /* Match the flattened angle */
+    }
+
+    /* 3. Shrink text further to fit the thinner stripes */
+    .marquee .text {
+        font-size: 18px !important;
+        letter-spacing: 0.5px;
+    }
+
+    .marquee-separator {
+        width: 25px !important;
+        height: 25px !important;
+    }
+
+    /* 4. Tighten the space between scrolling items */
+    .marquee-item {
+        gap: 15px !important;
+        padding-right: 15px !important;
+    }
+}
+
+/* ============================================================
+   TABLET VIEW (Optional: 768px to 1024px)
+   ============================================================ */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .marquee .text {
+        font-size: 38px;
+    }
+    .marquee {
+        padding: 25px 0;
+    }
+}
 
 
 
 
+/* Only apply the reveal and rotation if the device supports hover */
+@media (hover: hover) {
+  .group:hover .group-hover\:translate-y-0 {
+    transform: translateY(0);
+  }
+  
+  .group:hover .group-hover\:scale-100 {
+    transform: scale(1);
+  }
+}
+
+/* For Mobile: Show information differently or always visible */
+@media (hover: none) {
+  .group .group-hover\:translate-y-0 {
+    /* Maybe make the overlay 50% visible by default on mobile 
+       so they can see the project name without tapping */
+    transform: translateY(60%); 
+    background: rgba(89, 102, 236, 0.95);
+  }
+}
 
 
 
+/* --- Blog Section Container --- */
+.blog-section {
+  position: relative;
+  background-color: #ffffff;
+  padding-top: 100px;
+}
 
+/* --- Blog Card (Style Two) --- */
+.blog-block-two {
+  margin-bottom: 40px;
+}
 
+.blog-block-two .inner-box {
+  position: relative;
+  transition: all 500ms ease;
+}
 
+/* --- Image Reveal Effect --- */
+.blog-block-two .image-box {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background-color: var(--theme-color-dark);
+}
+
+.blog-block-two .image-box .image {
+  margin-bottom: 0;
+  position: relative;
+}
+
+.blog-block-two .image-box .image img {
+  width: 100%;
+  display: block;
+  transition: all 800ms ease;
+}
+
+/* The second image is hidden by default and reveals on hover */
+.blog-block-two .image-box .image img:nth-child(2) {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+.blog-block-two:hover .image-box .image img:nth-child(1) {
+  opacity: 0;
+  transform: scale(1.1);
+}
+
+.blog-block-two:hover .image-box .image img:nth-child(2) {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* --- Content Box --- */
+.blog-block-two .content-box {
+  position: relative;
+  padding: 30px 0;
+}
+
+.blog-block-two .post-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--theme-color-gray);
+  margin-bottom: 12px;
+}
+
+.blog-block-two .post-meta .category {
+  color: var(--theme-color1); /* Your brand blue #5966EC */
+}
+
+.blog-block-two .post-meta span {
+  color: var(--theme-color3);
+}
+
+.blog-block-two .title {
+  margin-bottom: 0;
+}
+
+.blog-block-two .title a {
+  color: var(--headings-color);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3em;
+  text-decoration: none;
+  transition: all 300ms ease;
+}
+
+.blog-block-two:hover .title a {
+  color: var(--theme-color1);
+}

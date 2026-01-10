@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Mousewheel, Keyboard } from "swiper/modules";
@@ -9,6 +9,7 @@ import { API_BASE_URL } from "../config/apiConfig";
 const Portfolio = ({ colours = {} }) => {
   const [portfolioItems, setPortfolioItems] = useState([]);
   const navigate = useNavigate();
+  const swiperRef = useRef(null);
 
   useEffect(() => {
     const fetchPortfolio = async () => {
@@ -32,7 +33,7 @@ const Portfolio = ({ colours = {} }) => {
 
   return (
     <section 
-      className="bg-gradient-to-br from-[var(--secondary)] via-[var(--secondary)]/30 to-[var(--accent)]/10 py-20 px-6 overflow-hidden relative"
+      className="bg-gradient-to-br from-[var(--secondary)] via-[var(--secondary)]/30 to-[var(--accent)]/10 py-3 px-6 overflow-hidden relative"
     >
       {/* Dynamic Background Elements for Visual Appeal */}
       <div className="absolute inset-0 pointer-events-none">
@@ -48,9 +49,9 @@ const Portfolio = ({ colours = {} }) => {
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Enhanced Header */}
-        <div className="text-center mb-20">
+        <div className="text-center mb-2 sm:mb-18">
           <p 
-            className="text-sm uppercase tracking-widest font-bold mb-4 drop-shadow-sm animate-fade-in"
+            className="text-sm uppercase tracking-widest font-bold mb-2 mt-2 sm:mt-4 drop-shadow-sm animate-fade-in"
             style={{ color: 'var(--accent)' }}
           >
             Showcasing Our Work
@@ -68,7 +69,7 @@ const Portfolio = ({ colours = {} }) => {
             }}
           ></div>
           <p 
-            className="text-lg md:text-xl mt-6 max-w-2xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl mt-5 max-w-2xl mx-auto leading-relaxed"
             style={{ color: 'var(--primary)', opacity: 0.7 }}
           >
             Explore our successful projects and innovative solutions delivered to our clients.
@@ -76,8 +77,30 @@ const Portfolio = ({ colours = {} }) => {
         </div>
 
         {/* Swiper Carousel - Added padding to prevent overflow */}
-        <div className="relative px-4">
+        <div className=" flex justify-center items-center max-w-full mx-auto px-0.5 sm:px-6 mt-1 sm:mt-16">
+          <button
+                    onClick={() => swiperRef.current?.slidePrev()}
+                    className="px-1 py-1 sm:px-2 sm:py-2 bg-[var(--primary)] text-white rounded-4xl mx-0.5 sm:mx-0 cursor-pointer"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15 19l-7-7 7-7"
+                      />
+                    </svg>
+                  </button>
+
+
           <Swiper
+            onSwiper={(swiper) => (swiperRef.current = swiper)}
             modules={[Autoplay, Pagination, Mousewheel, Keyboard]}
             spaceBetween={28}
             slidesPerView={1}
@@ -165,7 +188,7 @@ const Portfolio = ({ colours = {} }) => {
                   </div>
                   
                   {/* Project Name and Description */}
-                  <div className="relative z-10 text-center px-2 w-full">
+                  <div className="relative z-10 text-center px-0 w-full">
                     <span 
                       className="
                         text-sm md:text-base font-semibold
@@ -203,6 +226,26 @@ const Portfolio = ({ colours = {} }) => {
               </SwiperSlide>
             ))}
           </Swiper>
+
+          <button
+            onClick={() => swiperRef.current?.slideNext()}
+            className="px-1 py-1 sm:px-2 sm:py-2 bg-[var(--primary)] text-white rounded-4xl mx-0.5 sm:mx-0 cursor-pointer"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={2}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </button>
 
           {/* Pagination Dots */}
           <div className="swiper-pagination mt-4"></div>

@@ -15,7 +15,7 @@ const ServiceCard = ({ service, onExplore, index }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group relative flex flex-col w-full max-w-[380px] h-[580px] p-6 rounded-[2.5rem] border border-white/10 backdrop-blur-2xl shadow-2xl overflow-hidden transition-all duration-500"
+      className="group relative flex flex-col w-full max-w-[380px] h-[480px] sm:h-[560px] p-4 rounded-[2.5rem] border border-white/10 backdrop-blur-2xl shadow-2xl overflow-hidden transition-all duration-500"
       style={{
         background: "linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%)",
       }}
@@ -27,7 +27,7 @@ const ServiceCard = ({ service, onExplore, index }) => {
       />
 
       {/* Image Section */}
-      <div className="relative shrink-0 w-full h-48 mb-6 rounded-[2rem] overflow-hidden shadow-xl">
+      {/* <div className="relative shrink-0 w-full h-48 mb-6 rounded-[2rem] overflow-hidden shadow-xl">
         {service.thumbnail ? (
           <img
             src={`${API_BASE_URL}${service.thumbnail}`}
@@ -37,6 +37,13 @@ const ServiceCard = ({ service, onExplore, index }) => {
         ) : (
           <div className="w-full h-full flex items-center justify-center text-5xl bg-gray-800/50">⚙️</div>
         )}
+      </div> */}
+      <div className="relative h-72 p-1 overflow-hidden">
+        <img
+          src={`${API_BASE_URL}${service.thumbnail}`}
+          alt={service.title}
+          className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
+        />
       </div>
 
       <div className="flex flex-col flex-grow overflow-hidden">
@@ -45,7 +52,7 @@ const ServiceCard = ({ service, onExplore, index }) => {
         </h3>
         
         <div className="relative flex-grow overflow-hidden mb-4">
-          <div className="h-full overflow-y-auto pr-2 custom-scrollbar text-sm md:text-base leading-relaxed opacity-80" style={{ color: 'var(--primary)' }}>
+          <div className="h-full overflow-y-auto pr-2 pl-1 custom-scrollbar text-sm md:text-base leading-relaxed opacity-80" style={{ color: 'var(--primary)' }}>
             {service.description}
             <div className="h-8" />
           </div>
@@ -102,9 +109,9 @@ const ServicesManager = () => {
   const handleExplore = (service) => navigate(`/services/${service._id}`);
 
   return (
-    <div className="relative min-h-screen py-16 px-4 md:px-6 transition-colors duration-500" style={themeStyles}>
+    <div className="relative min-h-screen py-6 sm:py-10 px-4 md:px-6 transition-colors duration-500" style={themeStyles}>
       <div className="max-w-7xl mx-auto relative z-10">
-        <header className="text-center mb-16">
+        <header className="text-center mb-2 sm:mb-16">
           <motion.h2 initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} className="text-4xl md:text-6xl font-black tracking-tighter uppercase italic" style={{ color: 'var(--primary)' }}>
             Our <span style={{ color: 'var(--accent)' }}>Services</span>
           </motion.h2>

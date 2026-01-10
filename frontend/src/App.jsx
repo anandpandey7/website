@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import './App.css'; // This MUST be present for marquee styles
+
 import Header from './components/header.jsx';
 import HeroSection from './components/hero.jsx';
 import ServiceCard from './components/servicescard.jsx';
-import TrustedBy from './components/trustedby.jsx';
+import TrustedBy from './components/Clients.jsx';
 import Footer from './components/footer.jsx';
 import AboutSection from './components/about.jsx';
 import ContactPage from './components/contact.jsx';
@@ -17,6 +19,9 @@ import JobPage from './components/JobPage.jsx';
 import Blog from './components/Blog.jsx';
 import CertificatesSection from './components/Certificates.jsx';
 import OEMPrototypingSection from './components/OEM-Prototyping.jsx';
+import ProductShowcase from './components/Product.jsx';
+import MarqueeStyleThree from './components/MarqueeStyleThree.jsx';
+import Projects from './components/Projects.jsx';
 
 import { API_BASE_URL } from './config/apiConfig';
 
@@ -102,13 +107,15 @@ const App = () => {
                 <div id="services-section">
                   <ServiceCard />
                 </div>
-
+                <ProductShowcase />
                 <Portfolio />
                 <Testimonials />
+                <Projects />
+                <MarqueeStyleThree />
                 <Blog />
-                <div id="about-section">
+                {/* <div id="about-section">
                   <AboutSection />
-                </div>
+                </div> */}
               </>
             }
           />
@@ -120,7 +127,7 @@ const App = () => {
           <Route path="/about" element={<AboutSection />} />
 
           {/* CONTACT */}
-          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/contact" element={<ContactPage settings={settings} />} />
 
           <Route path="/clients/:id" element={<ClientDetail />} />
 
