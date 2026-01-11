@@ -138,7 +138,7 @@ const Projects = () => {
               Selected Works
             </span>
             <h2 className="text-5xl md:text-7xl font-black text-gray-900 leading-tight">
-              Dharti <span className="italic font-light text-[var(--primary)]">Projects</span>
+              Our <span className="italic font-light text-[var(--primary)]">Projects</span>
             </h2>
           </div>
           <div className="lg:col-span-5 flex items-end">

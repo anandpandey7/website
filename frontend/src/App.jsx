@@ -13,7 +13,7 @@ import ContactPage from './components/contact.jsx';
 import ClientDetail from "./components/ClientDetail";
 import ServiceDetail from "./components/ServiceDetail";
 import Career from './components/Carrier.jsx';
-import Portfolio from './components/Portfolio.jsx';
+// import Portfolio from './components/Portfolio.jsx';
 import Testimonials from './components/Testimonials.jsx';
 import JobPage from './components/JobPage.jsx';
 import Blog from './components/Blog.jsx';
@@ -108,7 +108,7 @@ const App = () => {
                   <ServiceCard />
                 </div>
                 <ProductShowcase />
-                <Portfolio />
+                {/* <Portfolio /> */}
                 <Testimonials />
                 <Projects />
                 <MarqueeStyleThree />
